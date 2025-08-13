@@ -138,6 +138,10 @@ html,body{
   color:black;
   line-height:1;
 }
+
+.minute.active{
+  font-size: 20px;
+}
 .min-label{
   font-size:14px;
   color:black;

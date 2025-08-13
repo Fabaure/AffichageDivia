@@ -1,6 +1,6 @@
 async function chargerArrivees(stopDirection, type_card) {
   try {
-    const response = await fetch(`http://localhost:3000/api/arrivees-gresilles-${stopDirection}`);
+    const response = await fetch(`https://affichagedivia.onrender.com/api/arrivees-gresilles-${stopDirection}`);
     const data = await response.json();
 
     const namestation = document.getElementById("station-name")

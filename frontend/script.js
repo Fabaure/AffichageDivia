@@ -22,8 +22,16 @@ async function chargerArrivees(stopDirection, type_card) {
       const card = cards[i]
 
       const temps = card.querySelector(".minute");
-      const minuteval = data.Minutes[i]
+      const min = card.querySelector(".min-label");
+      const minuteval = data.Minutes[i] - 5
       temps.textContent = minuteval === 0 ? "À l'arrêt" : `${minuteval}`;
+
+      if (minuteval===0){
+        temps.classList.add("active")
+        min.textContent = ""
+      }else{
+        temps.classList.remove("active")
+      }
 
       const namedest = card.querySelector(".dest-name");
       const dest = data.destination[i];

@@ -10,8 +10,11 @@ const path = require("path");
 
 app.use(cors());
 
-const STOP_ID_GRESILLE_1 = "4-1571"; // stop_id de l'arret Grésille direction Gare 
-const STOP_ID_GRESILLE_2 = "4-1555"; // stop_id de l'arret Grésille direction Quetigny
+const GareDirection = ["4-1551","4-1499","4-1494","4-1536","4-1576","4-1562","4-1574","4-1571","4-1573","4-1566","4-1569","4-1544","4-1572","4-1581","4-1565","4-1563","4-1575"]
+const QuetignyDirection = ["4-1585","4-1467","4-1462","4-1528","4-1560","4-1542","4-1558","4-1555","4-1557","4-1546","4-1550","4-1564","4-1556","4-1580","4-1545","4-1543","4-1559"]
+
+const nameStationList = ["DijonGare","FochGare","Darcy","Godran","Republique","Auditorium","Poincare","Gresilles","ParcSport","Chu","Erasme","Universite","Mazen","Piscine","CapVert","GrandMarche","Quetigny"]
+
 
 const tripsFile = fs.readFileSync(path.join(__dirname, "api/trips.txt"),"utf8");
 const tripLine = tripsFile.split("\n");
@@ -78,26 +81,32 @@ async function getArrivalsForStop(stopId) {
   return { Minutes: trams, destination : dest, line : lineid, station : stationName}
 }
 
+for(let i = 0; i<nameStationList.length; i++){
+  let NameStation = nameStationList[i];
+  let StopIdG = GareDirection[i]
+  let StopIdQ = QuetignyDirection[i]
+  app.get(`/api/arrivees-${NameStation}-gare`, async (req, res) => {
+    try {
 
-app.get("/api/arrivees-gresilles-gare", async (req, res) => {
-  try {
+      res.json(await getArrivalsForStop(StopIdG));
+    } catch (error) {
+      console.error("Erreur API:", error);
+      res.status(500).json({ error: "Erreur récupération données." });
+    }
+  });
 
-    res.json(await getArrivalsForStop(STOP_ID_GRESILLE_1));
-  } catch (error) {
-    console.error("Erreur API:", error);
-    res.status(500).json({ error: "Erreur récupération données." });
-  }
-});
+  app.get(`/api/arrivees-${NameStation}-quetigny`, async (req, res) => {
+    try {
 
-app.get("/api/arrivees-gresilles-quetigny", async (req, res) => {
-  try {
+      res.json(await getArrivalsForStop(StopIdQ));
+    } catch (error) {
+      console.error("Erreur API:", error);
+      res.status(500).json({ error: "Erreur récupération données." });
+    }
+  });
+}
 
-    res.json(await getArrivalsForStop(STOP_ID_GRESILLE_2));
-  } catch (error) {
-    console.error("Erreur API:", error);
-    res.status(500).json({ error: "Erreur récupération données." });
-  }
-});
+
 
 
 app.listen(PORT, () => {

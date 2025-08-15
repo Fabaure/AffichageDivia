@@ -1,10 +1,12 @@
-async function chargerArrivees(stopDirection, type_card) {
+async function chargerArrivees(nameStation, stopDirection, type_card) {
   try {
-    const response = await fetch(`https://affichagedivia.onrender.com/api/arrivees-gresilles-${stopDirection}`);
+    const response = await fetch(`http://localhost:3000/api/arrivees-${nameStation}-${stopDirection}`);
     const data = await response.json();
 
-    const namestation = document.getElementById("station-name")
-    namestation.textContent = data.station[0];
+    const leftfoot = document.querySelector(".left-foot")
+    const rightfoot = document.querySelector(".right-foot")
+    leftfoot.textContent = `Ligne T1 — ${nameStation} → Dijon Gare`;
+    rightfoot.textContent = `Ligne T1 — ${nameStation} → Quetigny Centre`;
 
     const time = document.getElementById("time")
     const Minutes =  new Date().getMinutes()
@@ -49,9 +51,14 @@ async function chargerArrivees(stopDirection, type_card) {
 }
 
 function Screenrefresh(){
-  chargerArrivees("quetigny",".cardL");
-  chargerArrivees("gare",".cardR");
+
+  let list = document.getElementById("select_station")
+  let select = list.value
+  chargerArrivees(select, "gare",".cardL");
+  chargerArrivees(select,"quetigny",".cardR");
 }
-setInterval(Screenrefresh, 10000); // rafraîchit toutes les 10s
+
+
+setInterval(Screenrefresh, 1000); // rafraîchit toutes les 1s
 Screenrefresh()
 

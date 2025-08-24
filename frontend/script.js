@@ -1,6 +1,6 @@
 async function chargerArrivees(nameStation, stopDirection, type_card) {
   try {
-    const response = await fetch(`http://localhost:3000/api/arrivees-${nameStation}-${stopDirection}`);
+    const response = await fetch(`https://affichagedivia.onrender.com/api/arrivees-${nameStation}-${stopDirection}`);
     const data = await response.json();
 
     const leftfoot = document.querySelector(".left-foot")
